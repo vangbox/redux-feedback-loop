@@ -20,9 +20,19 @@ const feedback = (state=[], action) => {
     }
 }
 
+const scoreFeedback = (state=[], action) => {
+    switch (action.type) {
+        case 'SET_SCOREFEEDBACK':
+            return action.payload;
+        default:
+            return state;
+    }
+}
+
 const store = createStore(
     combineReducers({
-        feedback
+        feedback,
+        scoreFeedback
     }),
     applyMiddleware(logger)
 )

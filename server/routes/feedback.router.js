@@ -15,3 +15,6 @@ router.get('/', (req, res) => {
 
 // POST Router
 // router.post()
+
+
+module.exports = router;

@@ -4,12 +4,12 @@ import axios from 'axios';
 import './App.css';
 import { useEffect } from 'react';
 import { useSelector, useDispatch} from 'react-redux'
-import { HashRouter as Router, Route, Link } from 'react-router-dom';
-
+import { Router, Route, Link } from 'react-router-dom';
+import {Select} from 'react-select';
 // Imports components
-import Page1 from '../Page1/Page1'
-// import Page2 from '../Page2/Page2'
-// import Page3 from '../Page3/Page3'
+// import SecondQuestion from '../SecondQuestion/SecondQuestion'
+// import ThirdQuestion from '../ThirdQuestion/ThirdQuestion'
+
 
 function App() {
 
@@ -20,21 +20,42 @@ function App() {
   }, [])
 
   // Redux Dispatcher
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-const getFeedback = () => {
-  axios({
-    method: 'GET',
-    url: '/feedback'
-  }).then(response => {
-    dispatch({
-      type: 'SET_FEEDBACK',
-      payload: response.data
+  //Axios GET
+  const getFeedback = () => {
+    axios({
+      method: 'GET',
+      url: '/feedback'
+    }).then(response => {
+      dispatch({
+        type: 'SET_FEEDBACK',
+        payload: response.data
+      })
+    }).catch(error => {
+        console.log('The axios get request to /feedback failed :(')
     })
-  }).catch(error => {
-      console.log('The axios get request to /feedback failed :(')
-  })
-}
+  }
+
+  //function to make scroll-down input
+  function inputs(event){
+    event.preventDefault();
+    
+    const [val, setVal] = useState("");
+
+  return (
+    <div>
+      <input
+        type="number"
+        pattern="[0-9]*"
+        value={val}
+        onChange={(e) =>
+          setVal((v) => (e.target.validity.valid ? e.target.value : v))
+        }
+      />
+      </div>
+    );
+  }
 
 
   return (
@@ -44,33 +65,15 @@ const getFeedback = () => {
         <h4>Don't forget it!</h4>
       </header>
 
-      <Router>
+      {/* FIRSTQUESTION */}
+      <div>
+        <h3>How are you feeling today?</h3>
+        <h4>Feeling? Select from: 1-5 </h4>
+        {inputs}
+      </div>
 
-        <Route  exact path='/'> 
-          <Page1 />
-          <button><Link to="/Page2">NEXT</Link></button>
-        </Route>
-
-        <Route  exact path='/'> 
-          <Page1 />
-          <button><Link to="/Page3">NEXT</Link></button>
-        </Route>
-
-        <Route  exact path='/'> 
-          <Page1 />
-          <button><Link to="/Page4">NEXT</Link></button>
-        </Route>
-
-        
-      </Router>
-
-
-
-
-
-
-
-
+      <button className='nextButon'>Next</button>
+  
 
     </div>
   );
